@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>FRUITION</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f5f5f5;
+    }
+
+    /* 上半部 */
+    .hero {
+      height: 70vh;
+      position: relative;
+      padding: 30px;
+    }
+
+    /* 左上標題 */
+    .title-left {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      font-weight: bold;
+      font-size: 24px;
+    }
+
+    /* 右上標題 */
+    .title-right {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      font-weight: bold;
+      font-size: 24px;
+    }
+
+   
+    /* 底部區塊 */
+    .footer {
+      background-color: #ffffff;
+      height: 30vh;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 20px;
+    }
+
+    /* 每個辣椒項目 */
+    .pepper-item {
+      text-align: center;
+    }
+
+    /* icon（先用色塊） */
+    .pepper-icon {
+      width: 120px;
+      height: 160px;
+      border-radius: 20px;
+      margin: 0 auto 10px;
+    }
+
+    .pepper-name {
+      font-size: 12px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- 上半部 -->
+  <div class="hero">
+  <div class="title-left">FRUITION</div>
+  <div class="title-right">NUTC</div>
+  <div class="music-btn btn">▶</div>
+
+  <div class="main-object">
+    <div class="handle"></div>
+    <div class="handle-end"></div>
+  </div>
+
+  <!--按鈕 -->
+  <div class="control-buttons">
+    <div class="btn save-btn"></div>
+    <div class="btn clear-btn"></div>
+  </div>
+
+</div>
+  <!-- 下半部 -->
+  <div class="footer">
+
+    <div class="pepper-item">
+    <img src="images/藍.png" class="pepper-icon" draggable="false">
+    <div class="pepper-name">BLUE</div>
+    </div>
+
+    <div class="pepper-item">
+     <img src="images/綠.png" class="pepper-icon" draggable="false">
+      <div class="pepper-name">GREEN</div>
+    </div>
+
+    <div class="pepper-item">
+     <img src="images/黃.png" class="pepper-icon" draggable="false">
+      <div class="pepper-name">YALLOW</div>
+    </div>
+
+    <div class="pepper-item">
+      <img src="images/紫.png" class="pepper-icon" draggable="false">
+      <div class="pepper-name">PURPLE</div>
+    </div>
+
+    <div class="pepper-item">
+     <img src="images/甜甜圈.png" class="pepper-icon" draggable="false">
+      <div class="pepper-name">CIRCLE</div>
+    </div>
+
+    <div class="pepper-item">
+     <img src="images/粉.png" class="pepper-icon" draggable="false">
+      <div class="pepper-name">PINK</div>
+    </div>
+
+  </div>
+<audio id="bgm" src="audio/snoozybeats-juicy-fruit-241161.mp3"></audio>
+<script>
+const peppers = document.querySelectorAll('.pepper-icon');
+const hero = document.querySelector('.hero');
+const saveBtn = document.querySelector('.save-btn');
+const clearBtn = document.querySelector('.clear-btn');
+
+let isDragging = false;
+let current = null;
+let offsetX = 0;
+let offsetY = 0;
+
+/* ✅ 直接拖底部辣椒（會複製） */
+peppers.forEach(pepper => {
+  pepper.addEventListener('mousedown', (e) => {
+    const clone = pepper.cloneNode(true);
+    clone.style.position = 'absolute';
+
+    const rect = hero.getBoundingClientRect();
+
+    clone.style.left = (e.clientX - rect.left - 20) + 'px';
+    clone.style.top = (e.clientY - rect.top - 30) + 'px';
+
+    hero.appendChild(clone);
+
+    current = clone;
+    isDragging = true;
+    offsetX = 20;
+    offsetY = 30;
+
+    clone.style.cursor = 'grabbing';
+  });
+});
+
+/* ✅ 拖動 */
+document.addEventListener('mousemove', (e) => {
+  if (!isDragging || !current) return;
+
+  const rect = hero.getBoundingClientRect();
+
+  let x = e.clientX - rect.left - offsetX;
+  let y = e.clientY - rect.top - offsetY;
+
+  // 限制範圍
+  x = Math.max(0, Math.min(x, rect.width - current.offsetWidth));
+  y = Math.max(0, Math.min(y, rect.height - current.offsetHeight));
+
+  current.style.left = x + 'px';
+  current.style.top = y + 'px';
+});
+
+/* ✅ 放開 */
+document.addEventListener('mouseup', () => {
+  isDragging = false;
+  current = null;
+});
+
+/* ✅ 清除 */
+clearBtn.addEventListener('click', () => {
+  const all = hero.querySelectorAll('.pepper-icon');
+  all.forEach(el => el.remove());
+});
+
+/* ✅ 儲存畫面（用 html2canvas） */
+saveBtn.addEventListener('click', () => {
+  html2canvas(hero).then(canvas => {
+    const link = document.createElement('a');
+    link.download = 'chilli.png';
+    link.href = canvas.toDataURL();
+    link.click();
+  });
+});
+const musicBtn = document.querySelector('.music-btn');
+const bgm = document.getElementById('bgm');
+
+let isPlaying = false;
+
+musicBtn.addEventListener('click', () => {
+  if (!isPlaying) {
+
+     bgm.currentTime = 0;
+
+    bgm.play();
+    musicBtn.textContent = "⏸"; // 換成暫停 icon
+    isPlaying = true;
+  } else {
+    bgm.pause();
+    musicBtn.textContent = "▶"; // 換回播放 icon
+    isPlaying = false;
+  }
+});
+</script>
+
+</body>
+</html>
