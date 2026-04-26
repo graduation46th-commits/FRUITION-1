@@ -1,0 +1,91 @@
+/* 重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 上方黃色區 */
+.hero {
+  background-image: url("images/415.jpg");
+  background-size: cover;       /* 填滿畫面 */
+  background-position: center;  /* 置中 */
+  background-repeat: no-repeat; /* 不重複 */
+
+  height: 70vh;
+  position: relative;
+  padding: 30px;
+}
+/* 標題 */
+.title-left {
+    color: #2df05e;
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  font-weight: bold;
+}
+
+.title-right {
+    color: #2df05e;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  font-weight: bold;
+}
+
+
+/* 底部區 */
+.footer {
+  background-color: #fff;
+  height: 30vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+/* 辣椒 */
+.pepper-icon {
+  width: 120px;
+  height: 160px;
+  object-fit: contain; /* 不變形 */
+  cursor: pointer;
+  margin: 0 auto 10px;
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+
+/* 按鈕容器 */
+.control-buttons {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+/* 圓形按鈕 */
+.btn {
+  width: 40px;
+  height: 40px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* hover 微動畫 */
+.btn:hover {
+  transform: scale(1.1);
+}
+
+.music-btn {
+  position: absolute;
+  top: 70px;   /* 在標題下面 */
+  right: 30px; /* 靠右 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
+}
